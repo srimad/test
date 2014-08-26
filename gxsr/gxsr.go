@@ -51,13 +51,18 @@ func main() {
 			val.avg = (data[eml].avg + du) / int64(2)
 		}
 		data[eml] = val
-		fmt.Println(eml)
-		fmt.Println(data[eml].count)
-		fmt.Println(data[eml].avg)
+		//fmt.Println(eml)
+		//fmt.Println(data[eml].count)
+		//fmt.Println(data[eml].avg)
 	}
 	err = scanner.Err()
 	check_err(err)
 
+	fmt.Printf("%20s %5s %10s\n", "Email Address", "Days", "Average")
+	fmt.Printf("%20s %5s %10s\n", "---", "---", "---")
+	for eml, val := range data {
+		fmt.Printf("%s: %d, %f\n", eml, val.count, val.avg/1024)
+	}
 
 	return
 }
