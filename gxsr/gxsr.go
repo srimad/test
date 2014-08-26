@@ -26,13 +26,13 @@ func main() {
 
 	type Vals struct {
 		count int
-		avg int64
+		avg float64
 	}
 
 	val := Vals{count: 0, avg: 0}
 	data := make(map [string] Vals)
 	var eml string
-	var du int64
+	var du float64
 	//var date string
 
 	scanner := bufio.NewScanner(inpfl)
@@ -40,7 +40,7 @@ func main() {
 		line := strings.Split(scanner.Text(), ",")
 
 		eml = line[0]
-		du, _ = strconv.ParseInt(line[1], 10, 32)
+		du, _ = strconv.ParseFloat(line[1], 10)
 		//date = line[2]
 
 		if data[eml].count == 0 {
@@ -48,7 +48,7 @@ func main() {
 			val.avg = du 
 		} else {
 			val.count = data[eml].count + 1
-			val.avg = (data[eml].avg + du) / int64(2)
+			val.avg = (data[eml].avg + du) / 2.00
 		}
 		data[eml] = val
 		//fmt.Println(eml)
@@ -58,10 +58,12 @@ func main() {
 	err = scanner.Err()
 	check_err(err)
 
-	fmt.Printf("%20s %5s %10s\n", "Email Address", "Days", "Average")
-	fmt.Printf("%20s %5s %10s\n", "---", "---", "---")
+	fmt.Printf("%-25s %5s %10s %10s\n", "Email Address", "Days", "Avg_gB", "Price_USD")
 	for eml, val := range data {
-		fmt.Printf("%s: %d, %f\n", eml, val.count, val.avg/1024)
+		gb := val.avg / (1024 * 1024 * 1024)
+		if gb > 512 {
+			fmt.Printf("%-25.25s %5d %10.2f %10.2f\n", eml, val.count, gb, (gb - 512) * 22.5 / 1024)
+		}
 	}
 
 	return
